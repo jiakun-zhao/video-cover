@@ -1,3 +1,3 @@
-# 一个极简的视频封面生成器
+# A smiple video cover generator.
 
 [![preview](./preview.png)](https://video-cover.0x3ba.cn)
