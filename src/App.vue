@@ -38,11 +38,11 @@ onMounted(() => randomColor())
 <template>
     <!-- !Cover -->
     <div ref="coverEl" class="aspect-16/10 bg-#121212 flex flex-col justify-end max-w-full mx-auto text-center" :style="{ width: 'calc(100vh * 16 / 10)' }">
-        <div class="font-bold h-45%" :style="{ fontSize: 'calc((100vh * 16 / 10) / 20)' }">
+        <div class="font-bold h-45%" :style="{ fontSize: 'calc((100vh * 16 / 10) / 15)' }">
             <span>{{ part1 }}</span>
             <span class="ml-.8em" :style="{ color: part2TextColor }">{{ part2 }}</span>
         </div>
-        <div class="h-20%" :style="{ fontSize: 'calc((100vh * 16 / 10) / 60)' }">{{ part3 }}</div>
+        <div class="h-20%" :style="{ fontSize: 'calc((100vh * 16 / 10) / 40)' }">{{ part3 }}</div>
     </div>
 
     <!-- !Control -->

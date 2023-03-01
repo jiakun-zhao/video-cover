@@ -1,1 +1,3 @@
-# 好像完全可以不用 Vue
+# 一个极简的视频封面生成器
+
+[![preview](./preview.png)](https://video-cover.0x3ba.cn)
