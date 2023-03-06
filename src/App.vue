@@ -5,7 +5,7 @@ import html2canvas from 'html2canvas'
 const isInputBoxShow = ref(false)
 const part1 = ref<string>('Haha, it')
 const part2 = ref<string>('works!!')
-const part3 = ref<string>('A smiple video cover generator.')
+const part3 = ref<string>('A simple video cover generator.')
 const coverEl = ref<HTMLDivElement>()
 const part2TextColor = ref<string>('')
 const inputStyle = 'outline-none border-none color-inherit bg-transparent text-sm w-32 inline-block px-4 border-l-1 border-l-solid border-white:20'

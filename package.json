@@ -1,15 +1,15 @@
 {
-    "name": "video-cover",
+    "name": "tools-video-cover",
     "version": "0.0.0",
     "private": "true",
     "description": "",
-    "homepage": "https://github.com/jiakun-zhao/video-cover#readme",
+    "homepage": "https://github.com/jiakun-zhao/tools-video-cover#readme",
     "bugs": {
-        "url": "https://github.com/jiakun-zhao/video-cover/issues"
+        "url": "https://github.com/jiakun-zhao/tools-video-cover/issues"
     },
     "repository": {
         "type": "git",
-        "url": "git+https://github.com/jiakun-zhao/video-cover.git"
+        "url": "git+https://github.com/jiakun-zhao/tools-video-cover.git"
     },
     "license": "MIT",
     "author": "Jiakun Zhao <jiakun.zhao@outlook.com>",
