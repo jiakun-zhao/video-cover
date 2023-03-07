@@ -3,8 +3,8 @@ import { onMounted, ref } from 'vue'
 import html2canvas from 'html2canvas'
 
 const isInputBoxShow = ref(false)
-const part1 = ref<string>('Haha, it')
-const part2 = ref<string>('works!!')
+const part1 = ref<string>('Hello')
+const part2 = ref<string>('World!')
 const part3 = ref<string>('A simple video cover generator.')
 const coverEl = ref<HTMLDivElement>()
 const part2TextColor = ref<string>('')
@@ -38,11 +38,11 @@ onMounted(() => randomColor())
 <template>
     <!-- !Cover -->
     <div ref="coverEl" class="aspect-16/10 bg-#121212 flex flex-col justify-end max-w-full mx-auto text-center" :style="{ width: 'calc(100vh * 16 / 10)' }">
-        <div class="font-bold h-45%" :style="{ fontSize: 'calc((100vh * 16 / 10) / 15)' }">
+        <div class="font-bold h-45%" :style="{ fontSize: 'calc((100vh * 16 / 10) / 10)' }">
             <span>{{ part1 }}</span>
-            <span class="ml-.8em" :style="{ color: part2TextColor }">{{ part2 }}</span>
+            <span class="ml-.5em" :style="{ color: part2TextColor }">{{ part2 }}</span>
         </div>
-        <div class="h-20%" :style="{ fontSize: 'calc((100vh * 16 / 10) / 40)' }">{{ part3 }}</div>
+        <div class="h-25%" :style="{ fontSize: 'calc((100vh * 16 / 10) / 22.5)' }">{{ part3 }}</div>
     </div>
 
     <!-- !Control -->
