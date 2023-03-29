@@ -1,15 +1,15 @@
 {
-    "name": "tools-video-cover",
+    "name": "video-cover",
     "version": "0.0.0",
-    "private": "true",
-    "description": "",
-    "homepage": "https://github.com/jiakun-zhao/tools-video-cover#readme",
+    "private": true,
+    "description": "A simple video cover generator.",
+    "homepage": "https://github.com/jiakun-zhao/video-cover#readme",
     "bugs": {
-        "url": "https://github.com/jiakun-zhao/tools-video-cover/issues"
+        "url": "https://github.com/jiakun-zhao/video-cover/issues"
     },
     "repository": {
         "type": "git",
-        "url": "git+https://github.com/jiakun-zhao/tools-video-cover.git"
+        "url": "git+https://github.com/jiakun-zhao/video-cover.git"
     },
     "license": "MIT",
     "author": "Jiakun Zhao <jiakun.zhao@outlook.com>",
@@ -23,19 +23,19 @@
         "extends": "@jiakun-zhao"
     },
     "dependencies": {
-        "html2canvas": "^1.4.1",
+        "@vueuse/core": "^9.13.0",
         "vue": "^3.2.47"
     },
     "devDependencies": {
-        "@iconify-json/ph": "^1.1.4",
+        "@iconify-json/ph": "^1.1.5",
         "@jiakun-zhao/eslint-config": "^0.0.4",
-        "@types/node": "^18.14.1",
-        "@vitejs/plugin-vue": "^4.0.0",
-        "eslint": "^8.34.0",
-        "typescript": "~4.9.5",
-        "unocss": "^0.50.1",
-        "vite": "^4.1.4",
-        "vite-plugin-jsdelivr": "^0.0.3",
+        "@types/node": "^18.15.10",
+        "@vitejs/plugin-vue": "^4.1.0",
+        "eslint": "^8.36.0",
+        "typescript": "~5.0.2",
+        "unocss": "^0.50.6",
+        "vite": "^4.2.1",
+        "vite-plugin-jsdelivr": "^0.0.4",
         "vue-tsc": "^1.2.0"
     }
 }

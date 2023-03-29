@@ -1,69 +1,124 @@
 <script lang="ts" setup>
-import { onMounted, ref } from 'vue'
-import html2canvas from 'html2canvas'
+import { ref, watch } from 'vue'
+import { useElementSize } from '@vueuse/core'
 
-const isInputBoxShow = ref(false)
-const part1 = ref<string>('Hello')
-const part2 = ref<string>('World!')
-const part3 = ref<string>('A simple video cover generator.')
-const coverEl = ref<HTMLDivElement>()
-const part2TextColor = ref<string>('')
-const inputStyle = 'outline-none border-none color-inherit bg-transparent text-sm w-32 inline-block px-4 border-l-1 border-l-solid border-white:20'
+const canvasElement = ref<HTMLCanvasElement>()
+const { width } = useElementSize(canvasElement)
 
-function download() {
-    html2canvas(coverEl.value!, {
-        width: coverEl.value!.clientWidth,
-        height: coverEl.value!.clientHeight,
-        scale: 1920 / coverEl.value!.clientWidth,
-    }).then((canvas) => {
-        const dataURL = canvas.toDataURL('image/jpeg')
-        const a = document.createElement('a')
-        a.download = 'cover.jpg'
-        a.href = dataURL
-        a.click()
-    })
-}
+const WIDTH = 1920
+const HEIGHT = 1200
+const SPACE_WIDTH = 100
+
+const left = ref<string>('Video')
+const right = ref<string>('Cover~')
+const info = ref<string>('A simple video cover generator.')
+const color = ref<string[]>([randomColor(), randomColor()])
+
+watch(
+    () => ({
+        ctx: canvasElement.value?.getContext('2d'),
+        left: left.value,
+        right: right.value,
+        info: info.value,
+        color: color.value,
+    }),
+    ({ ctx, left, right, info, color }) => {
+        if (!ctx)
+            return
+
+        // init
+        ctx.canvas.style.letterSpacing = '2px'
+        ctx.fillStyle = '#121212'
+        ctx.fillRect(0, 0, ctx.canvas.width, ctx.canvas.height)
+
+        // draw info
+        ctx.font = '80px Trebuchet MS'
+        ctx.textAlign = 'center'
+        ctx.fillStyle = '#767676'
+        ctx.fillText(info, WIDTH / 2, HEIGHT - 200)
+
+        ctx.font = 'bold 180px Trebuchet MS'
+        ctx.textAlign = 'left'
+
+        const lw = ctx.measureText(left).width
+        const rw = ctx.measureText(right).width
+        const full = lw + SPACE_WIDTH + rw
+        const lx = (WIDTH - full) / 2
+        const y = 120 + 420
+
+        ctx.fillStyle = '#ddd'
+        ctx.fillText(left, lx, y)
+
+        const gradient = ctx.createLinearGradient(lx + lw + SPACE_WIDTH, y + 120, lx + lw + SPACE_WIDTH + rw, y)
+        gradient.addColorStop(0, color[0])
+        gradient.addColorStop(1, color[1])
+        ctx.fillStyle = gradient
+        ctx.fillText(right, lx + lw + SPACE_WIDTH, y)
+    },
+    { immediate: true },
+)
 
 function randomColor() {
-    part2TextColor.value = `hsl(${Math.floor(Math.random() * 360)}, 20%, 50%)`
+    return `hsl(${Math.floor(Math.random() * 360)}, 20%, 50%)`
 }
 
-function toggleInputBoxShow() {
-    isInputBoxShow.value = !isInputBoxShow.value
+function download() {
+    const dataURL = canvasElement.value?.toDataURL('image/jpeg')
+    if (!dataURL)
+        return
+    const a = document.createElement('a')
+    a.download = 'video-cover.jpg'
+    a.href = dataURL
+    a.click()
 }
-
-onMounted(() => randomColor())
 </script>
 
 <template>
-    <!-- !Cover -->
-    <div ref="coverEl" class="aspect-16/10 bg-#121212 flex flex-col justify-end max-w-full mx-auto text-center" :style="{ width: 'calc(100vh * 16 / 10)' }">
-        <div class="font-bold h-45%" :style="{ fontSize: 'calc((100vh * 16 / 10) / 10)' }">
-            <span>{{ part1 }}</span>
-            <span class="ml-.5em" :style="{ color: part2TextColor }">{{ part2 }}</span>
-        </div>
-        <div class="h-25%" :style="{ fontSize: 'calc((100vh * 16 / 10) / 22.5)' }">{{ part3 }}</div>
-    </div>
+    <div mx-auto mt-16 select-none w-4xl max-w="[calc(100%-4rem)]">
+        <canvas
+            ref="canvasElement"
+            bg="#121212" w-full block :width="WIDTH" :height="HEIGHT"
+            :style="{ height: `${(width * HEIGHT) / WIDTH}px` }"
+        ></canvas>
 
-    <!-- !Control -->
-    <div class="bg-black border-1 border-solid border-white:20 bottom-4 fixed flex items-center leading-1 left-4 rounded-1.2">
-        <!-- !Btn: Input Box Show -->
-        <div class="cursor-pointer pl-3 pr-1.5 py-2" @click="toggleInputBoxShow">
-            <div :class="isInputBoxShow ? 'i-ph:eye-duotone' : 'i-ph:eye-closed-duotone'"></div>
+        <div flex gap-2 mt-8>
+            <button @click="color = [randomColor(), randomColor()]">Random Color</button>
+            <button @click="download">Download</button>
         </div>
-        <!-- !Btn: Random Color -->
-        <div class="cursor-pointer px-1.5 py-2" @click="randomColor">
-            <div class="i-ph:palette-duotone"></div>
+
+        <div flex="~ col" w-full md:w="50%" gap-2 mt-2>
+            <input v-model="left" type="text" />
+            <input v-model="right" type="text" />
+            <input v-model="info" type="text" />
         </div>
-        <!-- !Btn: Download -->
-        <div class="cursor-pointer pl-1.5 pr-3 py-2" @click="download">
-            <div class="i-ph:download-duotone"></div>
-        </div>
-        <!-- !Input -->
-        <div v-show="isInputBoxShow">
-            <input v-model="part1" placeholder="Part 1" :class="inputStyle" type="text" />
-            <input v-model="part2" placeholder="Part 2" :class="inputStyle" type="text" />
-            <input v-model="part3" placeholder="Part 3" :class="inputStyle" type="text" />
-        </div>
+
+        <footer my-24>
+            <span>Made by </span>
+            <a href="https://zhaojiakun.cn">Jiakun Zhao</a>
+            <span> | </span>
+            <a href="https://github.com/jiakun-zhao/video-cover">Source Code</a>
+        </footer>
     </div>
 </template>
+
+<style>
+a {
+    color: inherit;
+}
+
+button:hover {
+    cursor: pointer;
+    background-color: #121212;
+}
+
+button,
+input {
+    outline: none;
+    background: transparent;
+    color: inherit;
+    font-size: 1rem;
+    border: 1px solid rgba(255, 255, 255, 0.16);
+    padding: 0.4rem 0.7rem;
+    letter-spacing: inherit;
+}
+</style>
