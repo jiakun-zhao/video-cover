@@ -35,7 +35,6 @@
         "typescript": "~5.0.2",
         "unocss": "^0.50.6",
         "vite": "^4.2.1",
-        "vite-plugin-jsdelivr": "^0.0.4",
         "vue-tsc": "^1.2.0"
     }
 }
