@@ -1,18 +1,24 @@
 <script lang="ts" setup>
-import { ref, watch } from 'vue'
+import { computed, ref, watch } from 'vue'
 import { useElementSize } from '@vueuse/core'
 
 const canvasElement = ref<HTMLCanvasElement>()
 const { width } = useElementSize(canvasElement)
 
-const WIDTH = 1920
-const HEIGHT = 1200
-const SPACE_WIDTH = 100
+// const WIDTH = 1920
+const WIDTH = 1600
+// const HEIGHT = 1200
+const HEIGHT = 1000
+const SPACE_WIDTH = 40
 
 const left = ref<string>('Video')
 const right = ref<string>('Cover~')
 const info = ref<string>('A simple video cover generator.')
 const color = ref<string[]>([randomColor(), randomColor()])
+const isEdgeShow = ref<boolean>(true)
+const fontSize = ref<number>(120)
+
+const realHeight = computed(() => (width.value * HEIGHT) / WIDTH)
 
 watch(
     () => ({
@@ -20,9 +26,10 @@ watch(
         left: left.value,
         right: right.value,
         info: info.value,
+        fontSize: fontSize.value,
         color: color.value,
     }),
-    ({ ctx, left, right, info, color }) => {
+    ({ ctx, left, right, info, fontSize, color }) => {
         if (!ctx)
             return
 
@@ -32,19 +39,20 @@ watch(
         ctx.fillRect(0, 0, ctx.canvas.width, ctx.canvas.height)
 
         // draw info
-        ctx.font = '80px Trebuchet MS'
+        ctx.font = `${WIDTH / 32}px Trebuchet MS`
         ctx.textAlign = 'center'
         ctx.fillStyle = '#767676'
-        ctx.fillText(info, WIDTH / 2, HEIGHT - 200)
+        ctx.fillText(info, WIDTH / 2, HEIGHT - 160)
 
-        ctx.font = 'bold 180px Trebuchet MS'
+        // draw title
+        ctx.font = `bold ${fontSize}px Trebuchet MS`
         ctx.textAlign = 'left'
 
         const lw = ctx.measureText(left).width
         const rw = ctx.measureText(right).width
         const full = lw + SPACE_WIDTH + rw
         const lx = (WIDTH - full) / 2
-        const y = 120 + 420
+        const y = HEIGHT / 2.1
 
         ctx.fillStyle = '#ddd'
         ctx.fillText(left, lx, y)
@@ -74,15 +82,33 @@ function download() {
 </script>
 
 <template>
-    <div mx-auto mt-16 select-none w-4xl max-w="[calc(100%-4rem)]">
+    <div mx-auto mt-16 select-none w-4xl relative max-w="[calc(100%-4rem)]">
         <canvas
             ref="canvasElement"
             bg="#121212" w-full block :width="WIDTH" :height="HEIGHT"
-            :style="{ height: `${(width * HEIGHT) / WIDTH}px` }"
+            :style="{ height: `${realHeight}px` }"
         ></canvas>
+
+        <div
+            v-show="isEdgeShow"
+            absolute w-full top-0 left-0 flex items-center justify-center
+            :style="{ height: `${realHeight}px` }"
+        >
+            <div
+                absolute border-x="1 dashed" border-color-white:20
+                :style="{ width: `${realHeight * 4 / 3}px`, height: `${realHeight}px` }"
+            ></div>
+            <div
+                absolute w-full border-y="1 dashed" border-color-white:20
+                :style="{ height: `${width * 9 / 16}px` }"
+            ></div>
+        </div>
 
         <div flex gap-2 mt-8>
             <button @click="color = [randomColor(), randomColor()]">Random Color</button>
+            <button @click="isEdgeShow = !isEdgeShow">Edge</button>
+            <button @click="fontSize += 2">Font size +</button>
+            <button @click="fontSize -= 2">Font size -</button>
             <button @click="download">Download</button>
         </div>
 
